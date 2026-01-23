@@ -46,7 +46,14 @@ const users: UserData[] = [
     id: 6,
     name: 'Fiona Gallagher',
     email: 'fiona.gallagher@example.com',
-    createdAt: new Date('2023-06-18'),
+    createdAt: new Date('2023-07-22'),
+    isActive: true,
+  },
+  {
+    id: 7,
+    name: 'George Martin',
+    email: 'george.martin@example.com',
+    createdAt: new Date('2023-07-22'),
     isActive: true,
   },
 ];

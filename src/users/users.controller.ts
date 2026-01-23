@@ -6,10 +6,12 @@ import {
   Patch,
   Param,
   Delete,
+  NotFoundException,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { NotFoundError } from 'rxjs';
 
 @Controller('users')
 export class UsersController {
@@ -27,7 +29,16 @@ export class UsersController {
 
   @Get(':id')
   findOneUser(@Param('id') id: number) {
-    return this.usersService.findOneUser(+id);
+    try {
+      return this.usersService.findOneUser(+id);
+    } catch (error) {
+      throw new NotFoundException(`user with ID ${id} not found`);
+    }
+  }
+
+  @Get('active-status/:isActive')
+  findUserByActiveStatus(@Param('isActive') isActive: boolean) {
+    return this.usersService.findUserByActiveStatus(isActive);
   }
 
   @Patch(':id')
@@ -37,6 +48,10 @@ export class UsersController {
 
   @Delete(':id')
   remove(@Param('id') id: number) {
-    return this.usersService.remove(+id);
+    try {
+      return this.usersService.removeUser(+id);
+    } catch (error) {
+      throw new NotFoundException(`user with ID ${id} not found`);
+    }
   }
 }
