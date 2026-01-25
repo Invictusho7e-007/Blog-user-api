@@ -18,7 +18,10 @@ export class UsersService {
     return newUser;
   }
 
-  findAllUser() {
+  findUsers(isActive: boolean) {
+    if (isActive !== undefined) {
+      return this.findUserByStatus(isActive);
+    }
     return userData;
   }
 
@@ -32,19 +35,10 @@ export class UsersService {
     }
   }
 
-  findUserByActiveStatus(@Query('isActive') isActive: boolean) {
-    const activeUser = userData.filter((user) => user.isActive === true);
-    console.log(activeUser);
-
-    if (activeUser) {
-      return { code: 200, activeUser, message: `All active users found` };
-    }
-    const notActive = userData.filter((user) => user.isActive === false);
-    return {
-      code: 200,
-      notActive,
-      message: `All deactivated users found`,
-    };
+  findUserByStatus(isActive: boolean) {
+    console.log({ isActive });
+    console.log(typeof isActive);
+    return userData.filter((user) => user.isActive === isActive);
   }
 
   updateUserStatus(id: number, updateUserDto: UpdateUserDto) {
@@ -56,7 +50,7 @@ export class UsersService {
       return {
         message: `User with ID ${id} deactivated successfully`,
         code: 200,
-        userData,
+        user,
       };
     }
 

@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   NotFoundException,
+  Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -23,8 +24,8 @@ export class UsersController {
   }
 
   @Get()
-  findAllUser() {
-    return this.usersService.findAllUser();
+  findUsers(@Query('isActive') isActive: boolean) {
+    return this.usersService.findUsers(isActive);
   }
 
   @Get(':id')
@@ -36,14 +37,17 @@ export class UsersController {
     }
   }
 
-  @Get('active-status/:isActive')
-  findUserByActiveStatus(@Param('isActive') isActive: boolean) {
-    return this.usersService.findUserByActiveStatus(isActive);
+  @Patch('/update-status:id')
+  update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
+    return this.usersService.updateUserStatus(+id, updateUserDto);
   }
 
   @Patch(':id')
-  update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.updateUserStatus(+id, updateUserDto);
+  updateUserData(
+    @Param('id') id: number,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    return this.usersService.updateUserData(+id, updateUserDto);
   }
 
   @Delete(':id')
