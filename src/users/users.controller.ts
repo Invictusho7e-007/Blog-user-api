@@ -18,10 +18,13 @@ import { NotFoundError } from 'rxjs';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+
   @Post()
-  createUser(@Body() createUserDto: CreateUserDto) {
+  async createUser(@Body() createUserDto: CreateUserDto) {
     return this.usersService.createUser(createUserDto);
   }
+
+
 
   @Get()
   findUsers(@Query('isActive') isActive: boolean) {
@@ -39,7 +42,11 @@ export class UsersController {
 
   @Patch('/update-status:id')
   update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.updateUserStatus(+id, updateUserDto);
+    try {
+      return this.usersService.updateUserStatus(+id, updateUserDto);
+    } catch (error) {
+      throw new NotFoundException(`user with ID ${id} not found`);
+    }
   }
 
   @Patch(':id')
