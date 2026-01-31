@@ -1,7 +1,6 @@
 import { Inject, Injectable, Query, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-// import userData from './user-data/userData';
 import { User } from './users.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
@@ -27,7 +26,7 @@ export class UsersService {
     return this.userModel.find();
   }
 
-  async findOneUser(id: number) {
+  async findOneUser(id: string) {
     const user = await this.userModel.findById(id);
     if (user) {
       return { code: 200, user, message: `user with ID ${id} found ` };
@@ -37,11 +36,9 @@ export class UsersService {
     }
   }
 
-  // findUserByStatus(isActive: boolean) {
-  //   return userData.filter((user) => user.isActive === isActive);
-  // }
 
-  async updateUserStatus(id: number, updateUserDto: UpdateUserDto) {
+
+  async updateUserStatus(id: string, updateUserDto: UpdateUserDto) {
     const user = await this.userModel.findById(id);
 
     if (user && user.isActive === true) {
@@ -66,7 +63,7 @@ export class UsersService {
     }
   }
 
-  async updateUserData(id: number, updateUserDto: UpdateUserDto) {
+  async updateUserData(id: string, updateUserDto: UpdateUserDto) {
     const user = await this.userModel.findById(id);
     if (user) {
       user.name = updateUserDto.name ?? user.name;
@@ -81,7 +78,7 @@ export class UsersService {
     }
   }
 
-  async removeUser(id: number) {
+  async removeUser(id: string) {
     const user = await this.userModel.findById(id);
     if (user) {
       await this.userModel.findByIdAndDelete(id);
