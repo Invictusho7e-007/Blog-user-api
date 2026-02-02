@@ -19,7 +19,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  createUser(@Body() createUserDto: CreateUserDto) {
+  async createUser(@Body() createUserDto: CreateUserDto) {
     return this.usersService.createUser(createUserDto);
   }
 
@@ -29,31 +29,35 @@ export class UsersController {
   }
 
   @Get(':id')
-  findOneUser(@Param('id') id: number) {
+  findOneUser(@Param('id') id: string) {
     try {
-      return this.usersService.findOneUser(+id);
+      return this.usersService.findOneUser(id);
     } catch (error) {
       throw new NotFoundException(`user with ID ${id} not found`);
     }
   }
 
   @Patch('/update-status:id')
-  update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.updateUserStatus(+id, updateUserDto);
+  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    try {
+      return this.usersService.updateUserStatus(id, updateUserDto);
+    } catch (error) {
+      throw new NotFoundException(`user with ID ${id} not found`);
+    }
   }
 
   @Patch(':id')
   updateUserData(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto,
   ) {
-    return this.usersService.updateUserData(+id, updateUserDto);
+    return this.usersService.updateUserData(id, updateUserDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number) {
+  remove(@Param('id') id: string) {
     try {
-      return this.usersService.removeUser(+id);
+      return this.usersService.removeUser(id);
     } catch (error) {
       throw new NotFoundException(`user with ID ${id} not found`);
     }
