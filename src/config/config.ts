@@ -1,12 +1,8 @@
 import { connect } from 'http2';
-
-export default {
+export default () => ({
   database: {
     connectionString: process.env.CONNECTION_STRING,
-
-    secrets: {
-      jwtSecret: 'your_jwt_secret_key',
-    },
   },
-  port: process.env.PORT || 3000,
-};
+  
+  port: process.env.PORT,
+});
