@@ -25,7 +25,7 @@ export class UsersController {
 
   @Get()
   findUsers(@Query('isActive') isActive: boolean) {
-    return this.usersService.findUsers(isActive);
+    return this.usersService.findUsers(isActive );
   }
 
   @Get(':id')
